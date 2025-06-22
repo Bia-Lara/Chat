@@ -27,7 +27,13 @@ class ChatServer:
 
     def broadcast(self, message, sender_socket=None):
        #Funcao para enviar a mensagem para todos os clientes conectados
-       
+       for client in self.clients:
+            if client != sender_socket:
+                try:
+                    client.send(message)
+                except:
+                    client.close()
+                    self.clients.remove(client)
 
     def handle_client(self, client_socket):
        #Funcao para lidar com a comunicação de um cliente individualmente
